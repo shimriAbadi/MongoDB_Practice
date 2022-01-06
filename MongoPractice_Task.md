@@ -1,4 +1,4 @@
-<h1><u><center>MongoDB-Practice Tasks</center></u></h1>
+<h1 align="center"><u>MongoDB-Practice Tasks</u></h1>
 
 <div dir="rtl">
 
