@@ -1,0 +1,15 @@
+db.mongolit.find({$where:"this.volumeInfo.authors.length>2","volumeInfo.categories":{$in:["Computers"]}}).pretty()
+
+db.mongolit.find({"volumeInfo.pageCount":{$lt:560}},{"accessInfo.pdf.isAvailable":{$not:true}},{"accessInfo.epub.isAvailable":{$not:true}})
+
+
+db.mongolit.updateMany({"volumeInfo.pageCount":{$gt:200},"volumeInfo.ratingsCount":{$eq:1}},{$set:{"accessInfo.viewAbility":"Not Available"}})
+
+db.mongolit.updateMany({"volumeInfo.publisher":"O'ReillyMedia,Inc.\"","maturutyRating":{$ne:"MATURE"}},{$set: {"readinModes.icon":true}})
+
+
+db. mongolit.updateMany({"volumeInfo.averageRating":5},{$push:{"authors": "John Doe”}})
+
+db.mongolit.deleteMany({$or:[{"saleInfo.saleability":"NOT_FOR_SALE"},{"embeddable":false}]})
+
+db. mongolit.updateMany({"volumeInfo.subtitle":""},{$set:{"categories":"databases"}})

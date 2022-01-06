@@ -1,0 +1,31 @@
+create constraint on (p:Person) assert exists (p.UUID)
+
+create constraint on (p:Person) assert p.id is unique 
+
+create constraint on (p:Person) assert p.fullname is unique
+
+create (n:Person{fullname: 'Alexa Levi',age:30,salaries:[10000,25000],titles:['Developer','Quantitative Researcher'],friends:['Mark Dolev'],numOfChildren:2,children:['Rami Levi','Georgia Bershneg'],UUID:"AEALVI30"})
+
+create (n:Person{fullname: 'Mark Dolev',id:"3OF2LDRT55", friends:[Alexa      Levi],age:60,UUID:"MRDLV60"})
+
+match (a:Person{fullname:"Alexa Levi"})
+match (m:Person{fullname:"Mark Dolev"})
+MERGE (a)-[:FRIENDS]->(b)
+MERGE (m)-[:FRIENDS]->(a)
+
+MATCH (p:Person)
+    WHERE reduce(sum=0, s in p.salaries|sum+s)<40000 set 
+    p.salaries=p.salaries+10000
+
+MATCH (a:Person), (b:Person) WHERE a.numOfChildren>1 and b.numOfChildren>1 and not
+    a=b
+    MERGE (a)-[:FRIENDS]->(b)
+    ON CREATE set a.friends=a.friends+b.fullname WITH a
+    UNWIND a.children as children
+    RETURN children
+
+MATCH n=(a:Person) WHERE a.numOfChildren>1 UNWIND [n in nodes(n)] as nodes
+    RETURN sum(nodes.numOfChildren)
+
+WITH [40, 60, 30] as ages UNWIND ages as age MATCH (p:Person{age:age}) set p+={even:true}
+RETURN p ORDER by p.age
